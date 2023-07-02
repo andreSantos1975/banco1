@@ -25,25 +25,21 @@ app.get('', (req, res) =>{
         console.log(`connected as id ${connection.threadId}`)
 
 
-        //query(sqlString , callback)
-        connection.query('SELECT * from registro', (err, rows) =>{
-            connection.release()  //return the connection to pool
-
-            if(err) {
-                res.send(rows)
+        connection.query('SELECT * from registro', (err, rows) => {
+            connection.release(); // Return the connection to the pool
+        
+            if (err) {
+                console.log(err);
+                res.status(500).send('Erro ao executar a consulta SQL');
             } else {
-                console.log(err)
+                res.json(rows);
             }
-        })
+        });
+        
 
 
     })
 })
-
-
-
-
-
 
 
 //Listen on eviromont port 5000
