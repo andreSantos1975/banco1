@@ -18,7 +18,7 @@ const pool = mysql.createPool({
     database: 'cliente'
 });
 
-//obter nomes
+//obter res json
 app.get('', (req, res) =>{
     pool.getConnection((err, connection)=>{
         if(err) throw err
@@ -40,6 +40,59 @@ app.get('', (req, res) =>{
 
     })
 })
+
+
+
+//Get body-parser by id
+app.get('/:id', (req, res) =>{
+    pool.getConnection((err, connection)=>{
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+
+        connection.query('SELECT * from registro WHERE id = ?', [req.params.id], (err, rows) => {
+            connection.release(); // Return the connection to the pool
+        
+            if (err) {
+                console.log(err);
+                res.status(500).send('Erro ao executar a consulta SQL');
+            } else {
+                res.json(rows);
+            }
+        });
+        
+
+
+    })
+})
+
+
+//Delete by records
+app.delete('/:id', (req, res) =>{
+    pool.getConnection((err, connection)=>{
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+
+        connection.query('DELETE from registro WHERE id = ?', [req.params.id], (err, rows) => {
+            connection.release(); // Return the connection to the pool
+        
+            if (err) {
+                console.log(err);
+                res.status(500).send('Erro ao executar a consulta SQL');
+            } else {
+                res.json(rows);
+            }
+        });
+        
+
+
+    })
+})
+
+
+
+
 
 
 //Listen on eviromont port 5000
