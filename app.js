@@ -117,10 +117,10 @@ app.put('/registro/:id', (req, res) => {
         if (err) throw err;
         console.log(`connected as id ${connection.threadId}`);
 
-        const { nome, email } = req.body;
+        const { nome, email, empresa } = req.body;
         const id = req.params.id; // Obtém o valor do ID do req.params
 
-        connection.query('UPDATE registro SET nome = ?, email = ? WHERE id = ?', [nome, email, id], (err, result) => {
+        connection.query('UPDATE registro SET nome = ?, email = ?, empresa = ? WHERE id = ?', [nome, email, empresa, id], (err, result) => {
             connection.release(); // Return the connection to the pool
 
             if (err) {
