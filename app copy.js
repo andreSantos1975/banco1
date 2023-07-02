@@ -67,74 +67,28 @@ app.get('/:id', (req, res) =>{
 })
 
 
-// Delete by records
+//Delete by records
 app.delete('/:id', (req, res) =>{
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-        console.log(`connected as id ${connection.threadId}`);
+    pool.getConnection((err, connection)=>{
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
 
-        connection.query('DELETE FROM registro WHERE id = ?', [req.params.id], (err, result) => {
+
+        connection.query('DELETE from registro WHERE id = ?', [req.params.id], (err, rows) => {
             connection.release(); // Return the connection to the pool
-
+        
             if (err) {
                 console.log(err);
                 res.status(500).send('Erro ao executar a consulta SQL');
             } else {
-                res.json(result);
+                res.json(rows);
             }
         });
-    });
-});
+        
 
 
-// Add by record 
-// cria um endpoint que recebe uma solicitação POST contendo os dados de um novo registro a ser inserido no banco de dados. 
-app.post('', (req, res) => {
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-        console.log(`connected as id ${connection.threadId}`);
-
-        const params = req.body;
-        connection.query('INSERT INTO registro SET ?', params, (err, result) => {
-            connection.release(); // Return the connection to the pool
-
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a consulta SQL');
-            } else {
-                res.json({
-                    message: 'Registro inserido com sucesso',
-                    result: result
-                });
-            }
-        });
-    });
-});
-
-// Update by record
-app.put('/registro/:id', (req, res) => {
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-        console.log(`connected as id ${connection.threadId}`);
-
-        const { nome, email } = req.body;
-        const id = req.params.id; // Obtém o valor do ID do req.params
-
-        connection.query('UPDATE registro SET nome = ?, email = ? WHERE id = ?', [nome, email, id], (err, result) => {
-            connection.release(); // Return the connection to the pool
-
-            if (err) {
-                console.log(err);
-                res.status(500).send('Erro ao executar a consulta SQL');
-            } else {
-                res.json({
-                    message: 'Registro atualizado com sucesso',
-                    result: result
-                });
-            }
-        });
-    });
-});
+    })
+})
 
 
 
