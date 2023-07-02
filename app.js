@@ -14,7 +14,7 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: '',
     database: 'cliente'
 });
 
@@ -26,7 +26,7 @@ app.get('', (req, res) =>{
 
 
         //query(sqlString , callback)
-        connection.query('SELECT * from ', (err, rows) =>{
+        connection.query('SELECT * from registro', (err, rows) =>{
             connection.release()  //return the connection to pool
 
             if(err) {
